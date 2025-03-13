@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Test</title>
+</head>
+<body>
+<h1>WebSocket 연결 테스트</h1>
+<div id="messages"></div>
+
+<script>
+    // WebSocket 연결
+    const socket = new WebSocket("ws://localhost:8080/ws/conn");
+
+    // 연결 성공 시
+    socket.onopen = function(event) {
+        console.log("WebSocket 연결이 성공적으로 이루어졌습니다.");
+        document.getElementById("messages").innerHTML = "WebSocket 연결 성공";
+        checkWebSocketState();  // 연결 후 상태 체크
+    };
+
+    // 서버로부터 메시지 수신 시
+    socket.onmessage = function(event) {
+        console.log("서버로부터 메시지 수신:", event.data);
+        document.getElementById("messages").innerHTML += `<p>${event.data}</p>`;
+    };
+
+    // WebSocket 에러 처리
+    socket.onerror = function(error) {
+        console.error("WebSocket 연결 오류:", error);
+    };
+
+    // 연결 종료 시
+    socket.onclose = function(event) {
+        console.log("WebSocket 연결이 종료되었습니다.", event.code, event.reason);
+    };
+
+    // WebSocket 상태를 확인하는 함수
+    function checkWebSocketState() {
+        if (socket.readyState === WebSocket.OPEN) {
+            console.log("WebSocket 연결이 정상적으로 열렸습니다.");
+        } else {
+            console.log("WebSocket 연결 상태: " + socket.readyState);
+        }
+    }
+
+    // 버튼을 클릭하여 연결 종료
+    function closeWebSocketConnection() {
+        if (socket && socket.readyState === WebSocket.OPEN) {
+            socket.close();  // WebSocket 연결 종료
+            console.log("WebSocket 연결을 종료했습니다.");
+            document.getElementById("messages").innerHTML = "WebSocket 연결 종료";
+        } else {
+            console.log("WebSocket가 열려 있지 않습니다.");
+        }
+    }
+</script>
+
+<button onclick="closeWebSocketConnection()">WebSocket 연결 종료</button>
+</body>
+</html>

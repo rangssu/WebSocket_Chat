@@ -14,10 +14,13 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     private final WebSocketHandler webSocketHandler;
 
-    // Websocket 핸들러 등록
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(webSocketHandler, "/ws/chat").setAllowedOrigins("*");
+        registry
+                // /ws/conn 경로로 WebSocket 연결을 허용
+                .addHandler(webSocketHandler, "/ws/conn")
+                .setAllowedOrigins("http://localhost:8080")
+                .withSockJS();
     }
-    // 경로로 등록하고 접근 허용함.
+
 }
