@@ -1,4 +1,4 @@
-package com.example.websocket_chat;
+package com.example.websocket_chat.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
