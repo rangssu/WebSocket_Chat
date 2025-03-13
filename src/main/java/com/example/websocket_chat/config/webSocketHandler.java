@@ -42,7 +42,7 @@ public class webSocketHandler extends TextWebSocketHandler {
 
     // 연결이 닫힐 때 호출함.
     @Override
-    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status)/* throws Exception */{
         // 종료된 세션을 제거함.
         log.info("{} 연결 끊김", session.getId());
         sessions.remove(session);
