@@ -46,6 +46,6 @@ public class webSocketHandler extends TextWebSocketHandler {
         // 종료된 세션을 제거함.
         log.info("{} 연결 끊김", session.getId());
         sessions.remove(session);
-        session.sendMessage(new TextMessage("websocket 연결 종료"));
+        //session.sendMessage(new TextMessage("websocket 연결 종료"));
     }
 }

@@ -19,8 +19,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
         registry
                 // /ws/conn 경로로 WebSocket 연결을 허용
                 .addHandler(webSocketHandler, "/ws/conn")
-                .setAllowedOrigins("http://localhost:8080")
-                .withSockJS();
+                .setAllowedOrigins("http://localhost:8080");
     }
 
 }
