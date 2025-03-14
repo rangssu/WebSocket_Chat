@@ -2,21 +2,23 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WebSocket Test</title>
+  <title>웹소켓 채팅 연결</title>
 </head>
 <body>
-<h1>WebSocket 연결 테스트</h1>
+<h1>웹소켓 연결 테스트</h1>
 <div id="messages"></div>
+
+<input type="text" id="messageInput" placeholder="글쓰는곳" />
+<button onclick="sendMessage()">전송</button>
 
 <script>
   // WebSocket 연결
   const socket = new WebSocket("ws://localhost:8080/ws/conn");
 
   // 연결 성공 시
-  socket.onopen = function(event) {
-    console.log("WebSocket 연결 성공");
-    document.getElementById("messages").innerHTML = "WebSocket 연결 성공";
+  socket.onopen = function() {
+    console.log("연결 성공");
+    document.getElementById("messages").innerHTML = "연결 성공";
   };
 
   // 서버로부터 메시지 수신 시
@@ -28,26 +30,38 @@
   // WebSocket 에러 처리
   socket.onerror = function(error) {
     console.log("WebSocket 에러:", error);
-    document.getElementById("messages").innerHTML += "<p>WebSocket 에러 발생</p>";
+    document.getElementById("messages").innerHTML += "<p>에러</p>";
   };
 
   // WebSocket 연결 종료 시
   socket.onclose = function(event) {
-    console.log("WebSocket 연결 종료:", event);
-    document.getElementById("messages").innerHTML += "<p>WebSocket 연결 종료</p>";
+    console.log("연결이 끊겼습니다.:", event);
+    document.getElementById("messages").innerHTML += "<p>연결 종료</p>";
   };
 
   // WebSocket 연결 종료 함수
   function closeWebSocketConnection() {
     if (socket.readyState === WebSocket.OPEN) {
       socket.close();  // WebSocket 연결 종료
-      console.log("WebSocket 연결 종료");
+      console.log("연결 종료");
     } else {
       console.log("WebSocket 연결이 이미 종료되었습니다.");
     }
   }
-</script>
 
-<button onclick="closeWebSocketConnection()">WebSocket 연결 종료</button>
+  // 메세지 전송 함수
+  function sendMessage(){
+    const message = document.getElementById("messageInput").value;
+    if(message && socket.readyState === WebSocket.OPEN){
+      socket.send(message);
+      document.getElementById("messageInput").value = '';
+    }else {
+      console.log("메세지 입력하세요");
+    }
+  }
+
+</script>
+<br>
+<button onclick="closeWebSocketConnection()">연결 끊기</button>
 </body>
 </html>
