@@ -11,8 +11,6 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import java.util.HashSet;
 import java.util.Set;
 
-// 메시지 처리
-//Bean Configuration 파일에 Bean을 따로 등록하지 않아도 사용할 수 있다.
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -26,7 +24,9 @@ public class webSocketHandler extends TextWebSocketHandler {
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         log.info("{} 연결됨", session.getId());
         sessions.add(session);
-        session.sendMessage(new TextMessage("web socket 연결 완료"));
+        for (WebSocketSession s : sessions) {
+            s.sendMessage(new TextMessage(session.getId()+"websocket 연결 성공"));
+        }
     }
 
     // 메시지를 받을 때 호출됨
@@ -42,10 +42,27 @@ public class webSocketHandler extends TextWebSocketHandler {
 
     // 연결이 닫힐 때 호출함.
     @Override
-    public void afterConnectionClosed(WebSocketSession session, CloseStatus status)/* throws Exception */{
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         // 종료된 세션을 제거함.
         log.info("{} 연결 끊김", session.getId());
         sessions.remove(session);
-        //session.sendMessage(new TextMessage("websocket 연결 종료"));
+        for (WebSocketSession s : sessions) {
+            s.sendMessage(new TextMessage(session.getId()+"websocket 연결 종료"));
+        }
+//        session.sendMessage(new TextMessage("websocket 연결 종료"));
     }
 }
+
+//// 실행 시간 비교 코드
+//@Override
+//public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+//    long startRemoveTime = System.currentTimeMillis();
+//    sessions.remove(session);
+//    long endRemoveTime = System.currentTimeMillis();
+//    log.info("세션 제거 실행 시간: {} ms", (endRemoveTime - startRemoveTime));
+//
+//    long startSendTime = System.currentTimeMillis();
+//    session.sendMessage(new TextMessage("websocket 연결 종료"));
+//    long endSendTime = System.currentTimeMillis();
+//    log.info("메시지 전송 실행 시간: {} ms", (endSendTime - startSendTime));
+//}

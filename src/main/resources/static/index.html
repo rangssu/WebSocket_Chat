@@ -15,11 +15,11 @@
   // WebSocket 연결
   const socket = new WebSocket("ws://localhost:8080/ws/conn");
 
-  // 연결 성공 시
-  socket.onopen = function() {
-    console.log("연결 성공");
-    document.getElementById("messages").innerHTML = "연결 성공";
-  };
+  // // 연결 성공 시
+  // socket.onopen = function() {
+  //   console.log("연결 성공");
+  //   document.getElementById("messages").innerHTML = "연결 성공";
+  // };
 
   // 서버로부터 메시지 수신 시
   socket.onmessage = function(event) {

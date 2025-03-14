@@ -20,6 +20,9 @@ public class WebSocketConfig implements WebSocketConfigurer {
                 // /ws/conn 경로로 WebSocket 연결을 허용
                 .addHandler(webSocketHandler, "/ws/conn")
                 .setAllowedOrigins("http://localhost:8080");
+//                .setAllowedOrigins("*");
+        // TODO :Cross Origin Resource Sharing(CORS) 에 대해 고민해보기
+
     }
 
 }
