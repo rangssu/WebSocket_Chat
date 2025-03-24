@@ -28,6 +28,7 @@ export const connectStomp = (roomId, callback) => {
     stompClient.activate();
 };
 
+// 여기서 MessageType 을 넘겨줘도 좋을거 같ㅇ,ㅁ.
 export const sendMessage = (roomId, userId, message) => {
     if (!stompClient || !stompClient.connected) {
         setTimeout(() => sendMessage(roomId, userId, message), 1000);

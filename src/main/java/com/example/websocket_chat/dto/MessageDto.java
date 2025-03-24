@@ -15,7 +15,7 @@ public class MessageDto {
     private String userId;
     private String content;
     private MessageType type;
-//    private LocalDateTime timestamp;    // 아직 쓸모 없음.
+    private LocalDateTime timestamp;    // 아직 쓸모 없음.
 
     public enum MessageType {
         CHAT, ENTER, LEAVE
