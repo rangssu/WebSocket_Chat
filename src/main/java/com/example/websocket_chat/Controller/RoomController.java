@@ -1,12 +1,18 @@
 package com.example.websocket_chat.Controller;
 
+import com.example.websocket_chat.dto.RoomDTO;
+import com.example.websocket_chat.dto.response.RoomResponseDTO;
+import com.example.websocket_chat.entity.Room;
 import com.example.websocket_chat.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+import java.util.List;
+
+@RestController
 @RequestMapping("/rooms")
 //@RequiredArgsConstructor
 public class RoomController {
@@ -21,11 +27,16 @@ public class RoomController {
 
     // 방 생성
     @PostMapping
-    public void createRoom(Long id, String title) {
-        roomService.createroom(id, title);
-        // └ 요청 받아서 온 값이 들어감.
+    public ResponseEntity<RoomResponseDTO> createRoom(@RequestBody RoomDTO roomDTO) {
+        // 상태 코드를 같이 보내줘서 좋
 
+        RoomResponseDTO roomResponseDTO = roomService.createRoom(roomDTO);
+
+//      return ResponseEntity.ok(명시값);
+        return ResponseEntity.ok(roomResponseDTO);
+        // └ 요청 받아서 온 값이 들어감.
     }
+
 
     // 방삭제
     @DeleteMapping("/{roomId}")
@@ -46,8 +57,9 @@ public class RoomController {
     }
 
     @GetMapping
-    public void listRooms() {
-
+    public List<RoomResponseDTO> listRooms() {
+        List<RoomResponseDTO> roomResponseDTOList = roomService.roomList();
+        return roomService.roomList();
     }
 
 }
