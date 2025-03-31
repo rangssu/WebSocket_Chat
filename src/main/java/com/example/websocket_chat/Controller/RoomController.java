@@ -14,7 +14,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/rooms")
-//@RequiredArgsConstructor
 public class RoomController {
 
     private final RoomService roomService;
@@ -33,21 +32,22 @@ public class RoomController {
         RoomResponseDTO roomResponseDTO = roomService.createRoom(roomDTO);
 
 //      return ResponseEntity.ok(명시값);
-        return ResponseEntity.ok(roomResponseDTO);
+        return ResponseEntity.ok().body(roomResponseDTO);
         // └ 요청 받아서 온 값이 들어감.
     }
 
 
     // 방삭제
     @DeleteMapping("/{roomId}")
-    public void deleteRoom(@PathVariable Long roomId){
-//        ~~ id
+    public ResponseEntity<Void> deleteRoom(@PathVariable Long roomId){
+        roomService.deleteRoom(roomId);
+        return ResponseEntity.noContent().build();
     }
 
     // 방 수정
     @PutMapping("/{roomId}")
-    public void editRoom(@PathVariable Long roomId, @RequestBody RoomDTO roomDTO) {
-//        room의 아이디를 받아서 title 수정
+    public RoomResponseDTO editRoom(@PathVariable Long roomId, @RequestBody RoomDTO roomDTO) {
+       return roomService.updateRoom(roomId, roomDTO);
     }
 
     // 방 상세보기

@@ -4,6 +4,7 @@ import com.example.websocket_chat.dto.RoomDTO;
 import com.example.websocket_chat.dto.response.RoomResponseDTO;
 import com.example.websocket_chat.entity.Room;
 import com.example.websocket_chat.repository.RoomRepository;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ public class RoomService {
    // Void로 써도되는데 Test 용으로 확인하기 위해서.
    public RoomResponseDTO createRoom(RoomDTO roomDTO) {
       Room room = roomRepository.save(roomDTO.toRoom());
-      // 엔티티에 있는 데이터 값을 DTO에 넣어서 레이어 간의 이동을 하기 위함.//       roomDTO << title 소유중
+//      엔티티에 있는 데이터 값을 DTO에 넣어서 레이어 간의 이동을 하기 위함.//       roomDTO << title 소유중
 //      Getter 를 안쓰고 이거를 Entity로 해야한다
 
       RoomResponseDTO roomResponseDTO = RoomResponseDTO.of(room);
@@ -30,6 +31,7 @@ public class RoomService {
 //    return : Room 타입임.
    }
 
+// 방리스트
    public List<RoomResponseDTO> roomList(){
       List<RoomResponseDTO> roomResponseDTOList = new ArrayList<RoomResponseDTO>();
       List<Room> roomList = roomRepository.findAll();
@@ -46,16 +48,41 @@ public class RoomService {
 //              .map(RoomResponseDTO::of)
 //              .toList();
    }
-
+// 삭제
+   @Transactional
    public void deleteRoom(Long roomId) {
 //      roomRepository.deleteById(roomId); << 이건 자동으로 nullpoint 어쩌구 해준다 했었나 ? 다시 한번 확인해야함.
-      Room room = roomRepository.findById(roomId).orElseThrow();  // 내부 exception
+      Room room = roomRepository.findById(roomId).orElseThrow(
+              () -> new IllegalArgumentException("해당 방이 존재하지 않습니다.")
+      );  // 내부 exception
+      roomRepository.delete(room);
 //    1. 당연하게도 커스텀 익셉션이 좋음
 //    2. EntityNotFoundException << 엔티티가 존재하지 않을때 발생하는 예외.
 //    3. IllegalArgumentException  << roomId가 잘못된 값일경우.
 //    물어볼것 . 과거에 물어봣듯이 여기서도 @Transactional 을 사용하면 좋은가 ?
 //    쉽게 말해서 거래인데 내가 선입금 했는데 공기가 오면 개꼴받으니까 다시 입금한 돈을 돌려받는다는 작업 ?
+//    람다식
    }
+
+// 수정
+   @Transactional
+   public RoomResponseDTO updateRoom(Long roomId, RoomDTO roomDTO) {
+
+      Room room = roomRepository.findById(roomId).orElseThrow(
+              () -> new IllegalArgumentException("해당 방이 존재하지 않습니다.")
+      );
+
+      room.setTitle(roomDTO.getTitle());
+//    room.setPw(room.getPw)
+
+      // roomRepository.save(room);
+      // return을 할때는
+//      RoomResponseDTO roomResponseDTO = RoomResponseDTO.of(room);
+      return RoomResponseDTO.of(room);
+
+   }
+
+
 
 
 
