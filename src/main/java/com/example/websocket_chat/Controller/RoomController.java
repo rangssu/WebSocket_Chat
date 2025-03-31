@@ -40,13 +40,13 @@ public class RoomController {
 
     // 방삭제
     @DeleteMapping("/{roomId}")
-    public void deleteRoom(){
+    public void deleteRoom(@PathVariable Long roomId){
 //        ~~ id
     }
 
-    // 방 수적
+    // 방 수정
     @PutMapping("/{roomId}")
-    public void editRoom(){
+    public void editRoom(@PathVariable Long roomId, @RequestBody RoomDTO roomDTO) {
 //        room의 아이디를 받아서 title 수정
     }
 

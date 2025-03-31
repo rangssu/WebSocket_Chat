@@ -47,6 +47,29 @@ public class RoomService {
 //              .toList();
    }
 
+   public void deleteRoom(Long roomId) {
+//      roomRepository.deleteById(roomId); << 이건 자동으로 nullpoint 어쩌구 해준다 했었나 ? 다시 한번 확인해야함.
+      Room room = roomRepository.findById(roomId).orElseThrow();  // 내부 exception
+//    1. 당연하게도 커스텀 익셉션이 좋음
+//    2. EntityNotFoundException << 엔티티가 존재하지 않을때 발생하는 예외.
+//    3. IllegalArgumentException  << roomId가 잘못된 값일경우.
+//    물어볼것 . 과거에 물어봣듯이 여기서도 @Transactional 을 사용하면 좋은가 ?
+//    쉽게 말해서 거래인데 내가 선입금 했는데 공기가 오면 개꼴받으니까 다시 입금한 돈을 돌려받는다는 작업 ?
+   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }
