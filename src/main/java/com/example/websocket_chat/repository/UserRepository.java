@@ -1,14 +1,18 @@
 package com.example.websocket_chat.repository;
 
-import com.example.websocket_chat.dto.request.UserRequestDTO;
 import com.example.websocket_chat.entity.Users;
-import org.springframework.data.jpa.repository.JpaRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
-public interface UserRepository extends JpaRepository<Users, Long> {
-    Optional<Users> findByUserName(String userName);
-    boolean existsByUserName(String userName);
+@RequiredArgsConstructor
+public class UserRepository {
+    private final UserJpaRepository userJpaRepository;
+
+    public Users fetchByUserName(String username) {
+        return userJpaRepository.findByUserName(username).orElseThrow(
+                () -> new IllegalArgumentException("해당 유저가 존재하지 않습니다.")
+        );
+
+    }
 }

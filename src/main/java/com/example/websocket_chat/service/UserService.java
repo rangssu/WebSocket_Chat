@@ -2,6 +2,7 @@ package com.example.websocket_chat.service;
 
 import com.example.websocket_chat.dto.request.UserRequestDTO;
 import com.example.websocket_chat.entity.Users;
+import com.example.websocket_chat.repository.UserJpaRepository;
 import com.example.websocket_chat.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class UserService {
     private final UserRepository userRepository;
+    private final UserJpaRepository userJpaRepository;
 
 //  Member C
     @Transactional
@@ -20,7 +22,7 @@ public class UserService {
         validateUserNameCheck(userRequestDTO.getUserName());
 
         Users users = new Users(userRequestDTO.getUserName(), userRequestDTO.getPassWord());
-        return userRepository.save(users);
+        return userJpaRepository.save(users);
 //      return userResponseDTO
     }
 
@@ -29,17 +31,14 @@ public class UserService {
 //            throw new IllegalArgumentException("이미 존재하는 아이디 입니다.");
 //        }
 //      jpa 활용 방식.
-        if (userRepository.existsByUserName(userName)){
+        if (userJpaRepository.existsByUserName(userName)){
             throw new IllegalArgumentException("이미 존재하는 아이디 입니다.");
         }
     }
 
 // Member R ( 로그인 )
     public Users login(UserRequestDTO userRequestDTO) {
-        Users users = userRepository.findByUserName(userRequestDTO.getUserName())
-                .orElseThrow(
-                () -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다.")
-        );
+        Users users = userRepository.fetchByUserName(userRequestDTO.getUserName());
 
         validateCorrectPassword(users, userRequestDTO.getPassWord());
 
@@ -60,23 +59,25 @@ public class UserService {
 
 // Member U
     @Transactional
-    public void UpdateMember(Long UserId, UserRequestDTO userRequestDTO) {
-        Users users = userRepository.findById(UserId).orElseThrow(
-                () -> new IllegalArgumentException("해당 유저가 존재하지 않습니다.")
+    public Users UpdateMember(UserRequestDTO userRequestDTO) {
+        Users users = userJpaRepository.findByUserName(userRequestDTO.getUserName()).orElseThrow(
+                        () -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다.")
         );
         users.setUserName(userRequestDTO.getUserName());
         users.setPassWord(userRequestDTO.getPassWord());
+
+        return users;
     }
 
 // Member D
     @Transactional
     public void deleteMember(UserRequestDTO userRequestDTO) {
-        Users users = userRepository.findByUserName(userRequestDTO.getUserName()).orElseThrow(
+        Users users = userJpaRepository.findByUserName(userRequestDTO.getUserName()).orElseThrow(
                 () -> new IllegalArgumentException("해당 유저가 존재하지 않습니다.")
         );
         validateCorrectPassword(users, userRequestDTO.getPassWord());
 
-        userRepository.delete(users);
+        userJpaRepository.delete(users);
     }
 
 

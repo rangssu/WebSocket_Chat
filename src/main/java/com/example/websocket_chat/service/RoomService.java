@@ -82,6 +82,13 @@ public class RoomService {
 
    }
 
+// 방이 있는지
+   public RoomResponseDTO enterRoom(Long roomId) {
+      Room roomCheck = roomRepository.findById(roomId).orElseThrow(
+              () -> new IllegalArgumentException("방이 존재하지 않습니다.")
+      );
+      return RoomResponseDTO.of(roomCheck) ;
+   }
 
 
 

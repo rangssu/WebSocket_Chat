@@ -46,14 +46,14 @@ public class RoomController {
 
     // 방 수정
     @PutMapping("/{roomId}")
-    public RoomResponseDTO editRoom(@PathVariable Long roomId, @RequestBody RoomDTO roomDTO) {
-       return roomService.updateRoom(roomId, roomDTO);
+    public ResponseEntity<RoomResponseDTO> editRoom(@PathVariable Long roomId, @RequestBody RoomDTO roomDTO) {
+       return ResponseEntity.ok(roomService.updateRoom(roomId, roomDTO));
     }
 
     // 방 상세보기
     @GetMapping("/{roomId}")
-    public void enterRoom() {
-
+    public ResponseEntity<RoomResponseDTO> enterRoom(@PathVariable Long roomId) {
+       return ResponseEntity.ok(roomService.enterRoom(roomId));
     }
 
     @GetMapping

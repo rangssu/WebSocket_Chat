@@ -4,10 +4,8 @@ import com.example.websocket_chat.dto.request.UserRequestDTO;
 import com.example.websocket_chat.entity.Users;
 import com.example.websocket_chat.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
@@ -20,14 +18,24 @@ public class UserController {
     }
 
     @PostMapping
-    public Users SignUpUser(@RequestBody UserRequestDTO userRequestDTO) {
-        return userService.registerMember(userRequestDTO);
+    public ResponseEntity<Users> SignUpUser(@RequestBody UserRequestDTO userRequestDTO) {
+        return ResponseEntity.ok(userService.registerMember(userRequestDTO));
     }
 
     @PostMapping("/login")
-    public void loginMember(@RequestBody UserRequestDTO userRequestDTO) {
+    public ResponseEntity<Users> loginMember(@RequestBody UserRequestDTO userRequestDTO) {
+        return ResponseEntity.ok(userService.login(userRequestDTO));
+    }
 
+    @PutMapping("/edit")
+    public ResponseEntity<Users> editMember(@RequestBody UserRequestDTO userRequestDTO) {
+        return ResponseEntity.ok(userService.UpdateMember(userRequestDTO));
+    }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<Users> deleteMember(@RequestBody UserRequestDTO userRequestDTO) {
+        userService.deleteMember(userRequestDTO);
+        return ResponseEntity.noContent().build();
     }
 
 }
