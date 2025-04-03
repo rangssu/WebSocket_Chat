@@ -20,32 +20,32 @@ public class UserService {
 //  Member C
     @Transactional
     public Users registerMember(UserRequestDTO userRequestDTO) {
-        validateUserNameCheck(userRequestDTO.getUserName());
+        validateUserNameCheck(userRequestDTO.getUsername());
 
-        Users users = new Users(userRequestDTO.getUserName(), userRequestDTO.getPassWord());
+        Users users = new Users(userRequestDTO.getUsername(), userRequestDTO.getPassWord());
         return userJpaRepository.save(users);
 //      return userResponseDTO
     }
 
-    public void validateUserNameCheck(String userName) {
+    public void validateUserNameCheck(String username) {
 //        if(userRepository.findByUserName(userName).isPresent()) {
 //            throw new IllegalArgumentException("이미 존재하는 아이디 입니다.");
 //        }
 //      jpa 활용 방식.
-        if (userJpaRepository.existsByUserName(userName)){
+        if (userJpaRepository.existsByUsername(username)){
             throw new IllegalArgumentException("이미 존재하는 아이디 입니다.");
         }
     }
 
 // Member R ( 로그인 )
     public Users login(UserRequestDTO userRequestDTO) {
-        Users users = userRepository.fetchByUserName(userRequestDTO.getUserName());
+        Users users = userRepository.fetchByUserName(userRequestDTO.getUsername());
 
         userRepository.validateCorrectPassword(users, userRequestDTO.getPassWord());
 //        if (!users1.getPassWord().equals(userRequestDTO.getPassWord())) {
 //            throw new IllegalArgumentException("비밀번호가 맞지 않습니다.");
 //        }
-//      else를 안쓸 방법.
+//      else 를 안쓸 방법.
         return users;
     }
 
@@ -53,8 +53,8 @@ public class UserService {
 // Member U
     @Transactional
     public Users UpdateMember(UserRequestDTO userRequestDTO) {
-        Users users = userRepository.fetchByUserName(userRequestDTO.getUserName());
-        users.setUserName(userRequestDTO.getUserName());
+        Users users = userRepository.fetchByUserName(userRequestDTO.getUsername());
+        users.setUsername(userRequestDTO.getUsername());
         users.setPassWord(userRequestDTO.getPassWord());
 
         return users;
@@ -63,7 +63,7 @@ public class UserService {
 // Member D
     @Transactional
     public void deleteMember(UserRequestDTO userRequestDTO) {
-        Users users = userRepository.fetchByUserName(userRequestDTO.getUserName());
+        Users users = userRepository.fetchByUserName(userRequestDTO.getUsername());
         userRepository.validateCorrectPassword(users, userRequestDTO.getPassWord());
 
         userJpaRepository.delete(users);

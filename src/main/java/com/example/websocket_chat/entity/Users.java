@@ -19,13 +19,13 @@ public class Users {
 
     @NotBlank
     @Column(unique = true)
-    private String userName;
+    private String username;
 
     @NotBlank
     private String passWord;
 
-    public Users(String userName, String passWord) {
-        this.userName = userName;
+    public Users(String username, String passWord) {
+        this.username = username;
         this.passWord = passWord;
     }
 

@@ -56,7 +56,7 @@ public class RoomService {
    public void deleteRoom(Long roomId, UserRequestDTO userRequestDTO) {
 //      roomRepository.deleteById(roomId); << 이건 자동으로 nullpoint 어쩌구 해준다 했었나 ? 다시 한번 확인해야함.
       Room room = fetchRoom(roomId);  // 내부 exception
-      if(!room.getUsers().getUserName().equals(userRequestDTO.getUserName())){
+      if(!room.getUsers().getUsername().equals(userRequestDTO.getUsername())){
          throw new IllegalArgumentException("방 생성자가 아닙니다.");
       }
 
