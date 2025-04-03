@@ -1,6 +1,5 @@
 package com.example.websocket_chat.entity;
 
-import com.example.websocket_chat.dto.request.UserRequestDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
