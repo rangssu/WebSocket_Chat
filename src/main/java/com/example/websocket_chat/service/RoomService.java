@@ -21,13 +21,10 @@ public class RoomService {
       Room room = roomRepository.save(roomDTO.toRoom());
 //      엔티티에 있는 데이터 값을 DTO에 넣어서 레이어 간의 이동을 하기 위함.//       roomDTO << title 소유중
 //      Getter 를 안쓰고 이거를 Entity로 해야한다
-
-      RoomResponseDTO roomResponseDTO = RoomResponseDTO.of(room);
-
 //      RoomDTO<Room> room1 = new Room(roomDTO)''
 //      Room room = new Room();
 
-      return roomResponseDTO;
+      return RoomResponseDTO.of(room);
 //    return : Room 타입임.
    }
 
@@ -52,9 +49,7 @@ public class RoomService {
    @Transactional
    public void deleteRoom(Long roomId) {
 //      roomRepository.deleteById(roomId); << 이건 자동으로 nullpoint 어쩌구 해준다 했었나 ? 다시 한번 확인해야함.
-      Room room = roomRepository.findById(roomId).orElseThrow(
-              () -> new IllegalArgumentException("해당 방이 존재하지 않습니다.")
-      );  // 내부 exception
+      Room room = fetchRoom(roomId);  // 내부 exception
       roomRepository.delete(room);
 //    1. 당연하게도 커스텀 익셉션이 좋음
 //    2. EntityNotFoundException << 엔티티가 존재하지 않을때 발생하는 예외.
@@ -67,10 +62,7 @@ public class RoomService {
 // 수정
    @Transactional
    public RoomResponseDTO updateRoom(Long roomId, RoomDTO roomDTO) {
-
-      Room room = roomRepository.findById(roomId).orElseThrow(
-              () -> new IllegalArgumentException("해당 방이 존재하지 않습니다.")
-      );
+      Room room = fetchRoom(roomId);
 
       room.setTitle(roomDTO.getTitle());
 //    room.setPw(room.getPw)
@@ -91,6 +83,11 @@ public class RoomService {
    }
 
 
+   public Room fetchRoom(Long roomId) {
+      return roomRepository.findById(roomId).orElseThrow(
+              () -> new IllegalArgumentException("해당 방이 존재하지 않습니다.")
+      );
+   }
 
 
 

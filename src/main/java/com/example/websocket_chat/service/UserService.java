@@ -18,7 +18,6 @@ public class UserService {
 //  Member C
     @Transactional
     public Users registerMember(UserRequestDTO userRequestDTO) {
-//      아이디 체크
         validateUserNameCheck(userRequestDTO.getUserName());
 
         Users users = new Users(userRequestDTO.getUserName(), userRequestDTO.getPassWord());
@@ -40,29 +39,19 @@ public class UserService {
     public Users login(UserRequestDTO userRequestDTO) {
         Users users = userRepository.fetchByUserName(userRequestDTO.getUserName());
 
-        validateCorrectPassword(users, userRequestDTO.getPassWord());
-
-
+        userRepository.validateCorrectPassword(users, userRequestDTO.getPassWord());
 //        if (!users1.getPassWord().equals(userRequestDTO.getPassWord())) {
 //            throw new IllegalArgumentException("비밀번호가 맞지 않습니다.");
 //        }
 //      else를 안쓸 방법.
-
         return users;
     }
 
-    public void validateCorrectPassword(Users users, String password) {
-        if (!users.checkPW(password)) {
-            throw new IllegalArgumentException("비밀번호가 맞지 않습니다.");
-        }
-    }
 
 // Member U
     @Transactional
     public Users UpdateMember(UserRequestDTO userRequestDTO) {
-        Users users = userJpaRepository.findByUserName(userRequestDTO.getUserName()).orElseThrow(
-                        () -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다.")
-        );
+        Users users = userRepository.fetchByUserName(userRequestDTO.getUserName());
         users.setUserName(userRequestDTO.getUserName());
         users.setPassWord(userRequestDTO.getPassWord());
 
@@ -72,15 +61,26 @@ public class UserService {
 // Member D
     @Transactional
     public void deleteMember(UserRequestDTO userRequestDTO) {
-        Users users = userJpaRepository.findByUserName(userRequestDTO.getUserName()).orElseThrow(
-                () -> new IllegalArgumentException("해당 유저가 존재하지 않습니다.")
-        );
-        validateCorrectPassword(users, userRequestDTO.getPassWord());
+        Users users = userRepository.fetchByUserName(userRequestDTO.getUserName());
+        userRepository.validateCorrectPassword(users, userRequestDTO.getPassWord());
 
         userJpaRepository.delete(users);
     }
 
+//    다 userRepository 드갔음.
+////  아이디 확인
+//    public Users validateUsername(String username) {
+//        return userJpaRepository.findByUserName(username).orElseThrow(
+//                () -> new IllegalArgumentException("해당 유저가 존재하지 않습니다.")
+//        );
+//    }
 
+//// 비밀번호 확인
+//    public void validateCorrectPassword(Users users, String password) {
+//        if (!users.checkPW(password)) {
+//            throw new IllegalArgumentException("비밀번호가 맞지 않습니다.");
+//        }
+//    }
 
 
 }

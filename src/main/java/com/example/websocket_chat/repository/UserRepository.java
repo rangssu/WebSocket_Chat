@@ -15,4 +15,10 @@ public class UserRepository {
         );
 
     }
+    // 비밀번호 확인
+    public void validateCorrectPassword(Users users, String password) {
+        if (!users.checkPW(password)) {
+            throw new IllegalArgumentException("비밀번호가 맞지 않습니다.");
+        }
+    }
 }
