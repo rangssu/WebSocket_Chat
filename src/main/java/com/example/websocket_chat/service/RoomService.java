@@ -1,9 +1,12 @@
 package com.example.websocket_chat.service;
 
 import com.example.websocket_chat.dto.RoomDTO;
+import com.example.websocket_chat.dto.request.UserRequestDTO;
 import com.example.websocket_chat.dto.response.RoomResponseDTO;
 import com.example.websocket_chat.entity.Room;
+import com.example.websocket_chat.entity.Users;
 import com.example.websocket_chat.repository.RoomRepository;
+import com.example.websocket_chat.repository.UserRepository;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,10 +18,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RoomService {
    private final RoomRepository roomRepository;
+   private final UserRepository userRepository;
+
 
    // Void로 써도되는데 Test 용으로 확인하기 위해서.
    public RoomResponseDTO createRoom(RoomDTO roomDTO) {
-      Room room = roomRepository.save(roomDTO.toRoom());
+      Users users = userRepository.fetchByUserName(roomDTO.getUsername());
+      Room room = roomRepository.save(roomDTO.toRoom(users));
 //      엔티티에 있는 데이터 값을 DTO에 넣어서 레이어 간의 이동을 하기 위함.//       roomDTO << title 소유중
 //      Getter 를 안쓰고 이거를 Entity로 해야한다
 //      RoomDTO<Room> room1 = new Room(roomDTO)''
@@ -47,9 +53,13 @@ public class RoomService {
    }
 // 삭제
    @Transactional
-   public void deleteRoom(Long roomId) {
+   public void deleteRoom(Long roomId, UserRequestDTO userRequestDTO) {
 //      roomRepository.deleteById(roomId); << 이건 자동으로 nullpoint 어쩌구 해준다 했었나 ? 다시 한번 확인해야함.
       Room room = fetchRoom(roomId);  // 내부 exception
+      if(!room.getUsers().getUserName().equals(userRequestDTO.getUserName())){
+         throw new IllegalArgumentException("방 생성자가 아닙니다.");
+      }
+
       roomRepository.delete(room);
 //    1. 당연하게도 커스텀 익셉션이 좋음
 //    2. EntityNotFoundException << 엔티티가 존재하지 않을때 발생하는 예외.

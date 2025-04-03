@@ -5,9 +5,11 @@ import com.example.websocket_chat.entity.Users;
 import com.example.websocket_chat.repository.UserJpaRepository;
 import com.example.websocket_chat.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)

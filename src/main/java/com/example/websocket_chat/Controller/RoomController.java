@@ -1,17 +1,19 @@
 package com.example.websocket_chat.Controller;
 
 import com.example.websocket_chat.dto.RoomDTO;
+import com.example.websocket_chat.dto.request.UserRequestDTO;
 import com.example.websocket_chat.dto.response.RoomResponseDTO;
 import com.example.websocket_chat.entity.Room;
 import com.example.websocket_chat.service.RoomService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@Slf4j
 @RestController
 @RequestMapping("/rooms")
 public class RoomController {
@@ -28,7 +30,7 @@ public class RoomController {
     @PostMapping
     public ResponseEntity<RoomResponseDTO> createRoom(@RequestBody RoomDTO roomDTO) {
         // 상태 코드를 같이 보내줘서 좋
-
+        log.info(roomDTO.getUsername());
         RoomResponseDTO roomResponseDTO = roomService.createRoom(roomDTO);
 
 //      return ResponseEntity.ok(명시값);
@@ -39,8 +41,8 @@ public class RoomController {
 
     // 방삭제
     @DeleteMapping("/{roomId}")
-    public ResponseEntity<Void> deleteRoom(@PathVariable Long roomId){
-        roomService.deleteRoom(roomId);
+    public ResponseEntity<Void> deleteRoom(@PathVariable Long roomId, @RequestBody UserRequestDTO userRequestDTO) {
+        roomService.deleteRoom(roomId,userRequestDTO);
         return ResponseEntity.noContent().build();
     }
 

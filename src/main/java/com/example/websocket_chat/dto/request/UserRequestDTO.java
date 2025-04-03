@@ -5,12 +5,12 @@ import lombok.Getter;
 @Getter
 public class UserRequestDTO {
 
-    private String userName;
+    private String username;
 
     private String passWord;
 
-    public void aaa(String userName, String passWord ) {
-        userName = getUserName();
+    public void aaa(String username, String passWord ) {
+        username = getUsername();
         passWord = getPassWord();
     }
 
