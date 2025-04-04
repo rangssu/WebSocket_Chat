@@ -22,7 +22,7 @@ public class UserService {
     public Users registerMember(UserRequestDTO userRequestDTO) {
         validateUserNameCheck(userRequestDTO.getUsername());
 
-        Users users = new Users(userRequestDTO.getUsername(), userRequestDTO.getPassWord());
+        Users users = new Users(userRequestDTO.getUsername(), userRequestDTO.getPassword());
         return userJpaRepository.save(users);
 //      return userResponseDTO
     }
@@ -41,7 +41,7 @@ public class UserService {
     public Users login(UserRequestDTO userRequestDTO) {
         Users users = userRepository.fetchByUserName(userRequestDTO.getUsername());
 
-        userRepository.validateCorrectPassword(users, userRequestDTO.getPassWord());
+        userRepository.validateCorrectPassword(users, userRequestDTO.getPassword());
 //        if (!users1.getPassWord().equals(userRequestDTO.getPassWord())) {
 //            throw new IllegalArgumentException("비밀번호가 맞지 않습니다.");
 //        }
@@ -55,7 +55,7 @@ public class UserService {
     public Users UpdateMember(UserRequestDTO userRequestDTO) {
         Users users = userRepository.fetchByUserName(userRequestDTO.getUsername());
         users.setUsername(userRequestDTO.getUsername());
-        users.setPassWord(userRequestDTO.getPassWord());
+        users.setPassword(userRequestDTO.getPassword());
 
         return users;
     }
@@ -64,7 +64,7 @@ public class UserService {
     @Transactional
     public void deleteMember(UserRequestDTO userRequestDTO) {
         Users users = userRepository.fetchByUserName(userRequestDTO.getUsername());
-        userRepository.validateCorrectPassword(users, userRequestDTO.getPassWord());
+        userRepository.validateCorrectPassword(users, userRequestDTO.getPassword());
 
         userJpaRepository.delete(users);
     }

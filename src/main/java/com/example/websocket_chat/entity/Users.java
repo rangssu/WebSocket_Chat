@@ -1,7 +1,6 @@
 package com.example.websocket_chat.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,20 +15,19 @@ public class Users {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     @Column(unique = true)
     private String username;
 
-    @NotBlank
-    private String passWord;
+    @Column(nullable = false)
+    private String password;
 
-    public Users(String username, String passWord) {
+    public Users(String username, String password) {
         this.username = username;
-        this.passWord = passWord;
+        this.password = password;
     }
 
-    public boolean checkPW(String passWord) {
-        return this.passWord.equals(passWord);
+    public boolean checkPW(String password) {
+        return this.password.equals(password);
     }
 
 

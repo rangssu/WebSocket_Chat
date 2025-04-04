@@ -2,12 +2,7 @@ package com.example.websocket_chat.dto.response;
 
 
 import com.example.websocket_chat.entity.Room;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Getter
@@ -32,7 +27,7 @@ public class RoomResponseDTO {
     // of 는 정적 팩토리메서드의 명명 규칙
     public static RoomResponseDTO of(Room room) {
 
-        return new RoomResponseDTO(room.getId(), room.getTitle(), room.getUsers().getUserName());
+        return new RoomResponseDTO(room.getId(), room.getTitle(), room.getUsers().getUsername());
 //        return RoomResponseDTO.builder()
 //                .id(room.getId())
 //                .title(room.getTitle())

@@ -7,13 +7,14 @@ import com.example.websocket_chat.entity.Room;
 import com.example.websocket_chat.entity.Users;
 import com.example.websocket_chat.repository.RoomRepository;
 import com.example.websocket_chat.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RoomService {
@@ -56,7 +57,13 @@ public class RoomService {
    public void deleteRoom(Long roomId, UserRequestDTO userRequestDTO) {
 //      roomRepository.deleteById(roomId); << 이건 자동으로 nullpoint 어쩌구 해준다 했었나 ? 다시 한번 확인해야함.
       Room room = fetchRoom(roomId);  // 내부 exception
-      if(!room.getUsers().getUsername().equals(userRequestDTO.getUsername())){
+      Users user = userRepository.fetchByUserName(userRequestDTO.getUsername());
+
+      log.info(room.getUsers().getUsername());
+      log.info(user.getUsername());
+
+
+      if(!room.checkUser(user)){
          throw new IllegalArgumentException("방 생성자가 아닙니다.");
       }
 

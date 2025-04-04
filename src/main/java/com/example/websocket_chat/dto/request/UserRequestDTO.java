@@ -1,17 +1,16 @@
 package com.example.websocket_chat.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 
 @Getter
 public class UserRequestDTO {
 
+    @NotBlank
     private String username;
 
-    private String passWord;
+    @NotBlank
+    private String password;
 
-    public void aaa(String username, String passWord ) {
-        username = getUsername();
-        passWord = getPassWord();
-    }
 
 }
