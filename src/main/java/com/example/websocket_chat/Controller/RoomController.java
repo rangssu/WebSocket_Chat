@@ -3,13 +3,10 @@ package com.example.websocket_chat.Controller;
 import com.example.websocket_chat.dto.RoomDTO;
 import com.example.websocket_chat.dto.request.UserRequestDTO;
 import com.example.websocket_chat.dto.response.RoomResponseDTO;
-import com.example.websocket_chat.entity.Room;
 import com.example.websocket_chat.service.RoomService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -58,6 +55,7 @@ public class RoomController {
        return ResponseEntity.ok(roomService.enterRoom(roomId));
     }
 
+    // 방리스트.
     @GetMapping
     public List<RoomResponseDTO> listRooms() {
         List<RoomResponseDTO> roomResponseDTOList = roomService.roomList();
