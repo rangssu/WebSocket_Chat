@@ -28,7 +28,7 @@ public class SpringSecurity {
                         authorizeRequests
                                 .requestMatchers(PathRequest.toH2Console()).permitAll()
                                 .requestMatchers("/", "/users/login").permitAll()
-                                .requestMatchers("/rooms/**","/users").hasRole(Role.USER.name())
+//                                .requestMatchers("/rooms/**","/users").hasRole(Role.USER.name())
                         );
 
         return http.build();
