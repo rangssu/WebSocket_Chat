@@ -5,6 +5,8 @@ import com.example.websocket_chat.dto.request.UserRequestDTO;
 import com.example.websocket_chat.dto.response.RoomResponseDTO;
 import com.example.websocket_chat.entity.Room;
 import com.example.websocket_chat.entity.Users;
+import com.example.websocket_chat.exception.ExceptionCode;
+import com.example.websocket_chat.exception.WsChatException;
 import com.example.websocket_chat.repository.RoomRepository;
 import com.example.websocket_chat.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -94,7 +96,7 @@ public class RoomService {
 // 방이 있는지
    public RoomResponseDTO enterRoom(Long roomId) {
       Room roomCheck = roomRepository.findById(roomId).orElseThrow(
-              () -> new IllegalArgumentException("방이 존재하지 않습니다.")
+              () -> new WsChatException(ExceptionCode.ROOM_NOT_FOUND)
       );
       return RoomResponseDTO.of(roomCheck) ;
    }
