@@ -16,8 +16,8 @@ public class SpringSecurity {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-                .csrf((csrfConfig) ->
-                        csrfConfig.disable()
+                .csrf( csrf -> csrf.disable()
+
                 )
                 .headers((headerConfig) ->
                         headerConfig.frameOptions(frameOptionsConfig ->
@@ -27,6 +27,7 @@ public class SpringSecurity {
                 .authorizeHttpRequests((authorizeRequests) ->
                         authorizeRequests
                                 .requestMatchers(PathRequest.toH2Console()).permitAll()
+                                .requestMatchers("/**").permitAll()
                                 .requestMatchers("/", "/users/login").permitAll()
 //                                .requestMatchers("/rooms/**","/users").hasRole(Role.USER.name())
                         );

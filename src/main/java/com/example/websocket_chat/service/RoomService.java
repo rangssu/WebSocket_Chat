@@ -103,9 +103,9 @@ public class RoomService {
 
 
    public Room fetchRoom(Long roomId) {
-      return roomRepository.findById(roomId).orElseThrow(
-              () -> new IllegalArgumentException("해당 방이 존재하지 않습니다.")
-      );
+//              () -> new IllegalArgumentException("해당 방이 존재하지 않습니다.")
+      return roomRepository.findById(roomId)
+              .orElseThrow(() -> new WsChatException(ExceptionCode.ROOM_NOT_FOUND));
    }
 
 

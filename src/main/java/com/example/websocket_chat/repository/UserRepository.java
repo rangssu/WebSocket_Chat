@@ -1,6 +1,8 @@
 package com.example.websocket_chat.repository;
 
 import com.example.websocket_chat.entity.Users;
+import com.example.websocket_chat.exception.ExceptionCode;
+import com.example.websocket_chat.exception.WsChatException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +13,7 @@ public class UserRepository {
 
     public Users fetchByUserName(String username) {
         return userJpaRepository.findByUsername(username).orElseThrow(
-                () -> new IllegalArgumentException("해당 유저가 존재하지 않습니다.")
+                () -> new WsChatException(ExceptionCode.USER_NOT_FOUND)
         );
 
     }
