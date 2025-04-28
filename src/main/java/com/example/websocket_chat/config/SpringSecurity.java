@@ -30,6 +30,7 @@ public class SpringSecurity {
                                 .requestMatchers("/**").permitAll()
                                 .requestMatchers("/", "/users/login").permitAll()
 //                                .requestMatchers("/rooms/**","/users").hasRole(Role.USER.name())
+//                                .anyRequest().authenticated()
                         );
 
         return http.build();
