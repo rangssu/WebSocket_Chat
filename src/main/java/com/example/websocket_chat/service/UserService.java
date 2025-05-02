@@ -43,7 +43,7 @@ public class UserService {
 
         userRepository.validateCorrectPassword(users, userRequestDTO.getPassword());
 //        if (!users1.getPassWord().equals(userRequestDTO.getPassWord())) {
-//            throw new IllegalArgumentException("비밀번호가 맞지 않습니다.");
+//            thrgit ow new IllegalArgumentException("비밀번호가 맞지 않습니다.");
 //        }
 //      else 를 안쓸 방법.
         return users;

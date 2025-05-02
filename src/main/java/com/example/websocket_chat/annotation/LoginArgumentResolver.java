@@ -1,5 +1,6 @@
 package com.example.websocket_chat.annotation;
 
+import com.example.websocket_chat.entity.Users;
 import com.example.websocket_chat.exception.ExceptionCode;
 import com.example.websocket_chat.exception.WsChatException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,10 +22,18 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
         HttpServletRequest httpServletRequest = (HttpServletRequest) webRequest.getNativeRequest();
         HttpSession session = httpServletRequest.getSession(false);
 
-        if (session.getAttribute("loginUser") == null)  {
+        // 단일 책임 원칙
+        if (session == null){
             throw new WsChatException(ExceptionCode.UNAUTHENTICATED);
         }
 
-        return
+        Users user = (Users) session.getAttribute("loginSession");
+
+        if (user == null)  {
+            throw new WsChatException(ExceptionCode.UNAUTHENTICATED);
+        }
+
+        // 리턴으로 보낼껀 MemberAuth 임. user 에서 꺼내서 보내주면 됨,
+        return null;
     }
 }
